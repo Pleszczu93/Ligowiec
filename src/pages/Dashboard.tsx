@@ -51,7 +51,7 @@ export function Dashboard() {
 
   // Sesja / user
   const [userId, setUserId] = useState<string | null>(null);
-  const [email, setEmail] = useState<string | null>(null);
+  const [username, setEmail] = useState<string | null>(null);
 
   // Ligi
   const [leagues, setLeagues] = useState<League[]>([]);
@@ -379,7 +379,7 @@ export function Dashboard() {
         </h1>
 
         <div style={{ fontSize: 14 }}>
-          Zalogowano jako: {"UserName"}{" "}
+          Zalogowano jako: {username}{" "}
           <button onClick={logout} style={{ marginLeft: 8 }}>
             Wyloguj
           </button>
