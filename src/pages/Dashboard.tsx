@@ -51,7 +51,7 @@ export function Dashboard() {
 
   // Sesja / user
   const [userId, setUserId] = useState<string | null>(null);
-  const [username, setEmail] = useState<string | null>(null);
+  const [username, setUsername] = useState<string | null>(null);
 
   // Ligi
   const [leagues, setLeagues] = useState<League[]>([]);
@@ -96,7 +96,15 @@ export function Dashboard() {
         return;
       }
       setUserId(user.id);
-      setEmail(user.email ?? null);
+
+      // dociągnij username z profiles
+      const { data: prof, error: profErr } = await supabase
+        .from("profiles")
+        .select("username")
+        .eq("id", user.id)
+        .maybeSingle();
+      if (!profErr && prof) setUsername(prof.username ?? null);
+
       await loadLeagues(user.id);
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -337,7 +345,6 @@ export function Dashboard() {
         pred_away_goals: pa,
       });
       if (error?.message?.includes("duplicate key value")) {
-        // jeśli już istnieje — zrób update
         const { error: upErr } = await supabase
           .from("user_predictions")
           .update({ pred_home_goals: ph, pred_away_goals: pa })
@@ -379,7 +386,7 @@ export function Dashboard() {
         </h1>
 
         <div style={{ fontSize: 14 }}>
-          Zalogowano jako: {username}{" "}
+          Zalogowano jako: <b>{username ?? "—"}</b>
           <button onClick={logout} style={{ marginLeft: 8 }}>
             Wyloguj
           </button>
@@ -822,7 +829,7 @@ export function Dashboard() {
                     borderBottom: "1px solid #eee",
                   }}
                 >
-                  Home (user_id)
+                  Home (user)
                 </th>
                 <th
                   style={{
@@ -858,7 +865,7 @@ export function Dashboard() {
                     borderBottom: "1px solid #eee",
                   }}
                 >
-                  Away (user_id)
+                  Away (user)
                 </th>
                 <th
                   style={{
@@ -904,7 +911,12 @@ export function Dashboard() {
                   >
                     {f.away_goals}
                   </td>
-                  <td style={{ padding: 8, borderBottom: "1px solid #f0f0f0" }}>
+                  <td
+                    style={{
+                      padding: 8,
+                      borderBottom: "1px solid " + "#f0f0f0",
+                    }}
+                  >
                     {f.away_username ?? f.away_user_id}
                   </td>
                   <td
