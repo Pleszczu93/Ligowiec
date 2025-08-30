@@ -363,22 +363,28 @@ export function Dashboard() {
   );
 
   return (
-    <div
-      style={{
-        maxWidth: 1100,
-        margin: "40px auto",
-        padding: 16,
-        fontFamily:
-          "system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif",
-      }}
-    >
-      <h1>Ligowiec – Typuj ze znajomymi!</h1>
-      <p>
-        Zalogowano jako: <b>{email}</b>{" "}
-        <button onClick={logout} style={{ marginLeft: 8 }}>
-          Wyloguj
-        </button>
-      </p>
+    <div className="container">
+      <header
+        style={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          gap: 12,
+          flexWrap: "wrap",
+          marginBottom: 16,
+        }}
+      >
+        <h1 style={{ margin: 0, fontSize: "1.25rem" }}>
+          Ligowiec – Typuj ze znajomymi!
+        </h1>
+
+        <div style={{ fontSize: 14 }}>
+          Zalogowano jako: {"UserName"}{" "}
+          <button onClick={logout} style={{ marginLeft: 8 }}>
+            Wyloguj
+          </button>
+        </div>
+      </header>
 
       {error && <div style={{ color: "red", marginBottom: 12 }}>{error}</div>}
       {info && <div style={{ color: "green", marginBottom: 12 }}>{info}</div>}
